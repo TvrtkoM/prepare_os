@@ -30,6 +30,7 @@ if [[ ! -d $virtualenv_dir ]]; then
 fi
 
 # oh-my-zsh
+oh_my_zsh_url=""
 sh -c "$(wget https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)"
 
 # nvm
