@@ -15,6 +15,17 @@ gistmap = {
     '~/.spacemacs': ('7a0098cfd3ae408569cd200acaa7d766', ),
 }
 
+def upload(id_, gist_fn, fcontent):
+    patch_data = {
+        "files": {
+            gist_fn: {
+                "content": fcontent
+            }
+        }
+    }
+    res = requests.patch('https://api.github.com/gists/' + id_, auth=auth_tuple, data=json.dumps(patch_data))
+
+
 for fname, t in gistmap.items():
     if len(t) == 1:
         id = t[0]
@@ -22,12 +33,10 @@ for fname, t in gistmap.items():
     else:
         id, gist_fn = t
     with open(os.path.expanduser(fname), 'r') as f:
-        patch_data = {
-            "files": {
-                gist_fn: {
-                    "content": f.read()
-                }
-            }
-        }
-        res = requests.patch('https://api.github.com/gists/' + id, auth=auth_tuple, data=json.dumps(patch_data))
-        print('Updated {0}'.format(fname))
+        fcontent = f.read()
+        res = requests.get('https://api.github.com/gists/' + id, auth=auth_tuple)
+        content = json.loads(res.text)['files'][gist_fn]['content']
+        if(content!=fcontent):
+            upload(id, gist_fn, fcontent)
+            print('Updated {0}'.format(fname))
+
