@@ -30,14 +30,11 @@ if [[ ! -d $virtualenv_dir ]]; then
 fi
 
 # oh-my-zsh
-sh -c "$(wget https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)"
+wget -qO- https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh | bash
 
 # nvm
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
 nvm install stable
-
-# nodejs
-npm i -g typescript tern
 
 # download dotfiles to home
 wget $my_dot_zsh -O $HOME/.zshrc
